@@ -23,7 +23,7 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
 
     public var moveAnimation: UITableView.RowAnimation = .automatic
 
-    public var cellConfiguration: CellConfiguration? = nil
+    public weak var cellConfiguration: CellConfiguration? = nil
 
     public init(tableView: UITableView) {
         self.tableView = tableView
