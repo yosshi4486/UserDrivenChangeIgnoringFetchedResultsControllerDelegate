@@ -15,6 +15,14 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
 
     public unowned let tableView: UITableView
 
+    public var insertAnimation: UITableView.RowAnimation = .automatic
+
+    public var deleteAnimation: UITableView.RowAnimation = .automatic
+
+    public var updateAnimation: UITableView.RowAnimation = .automatic
+
+    public var moveAnimation: UITableView.RowAnimation = .automatic
+
     public init(tableView: UITableView) {
         self.tableView = tableView
     }
@@ -54,7 +62,7 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
                 return
             }
 
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            tableView.insertRows(at: [newIndexPath], with: insertAnimation)
 
         case .delete:
 
@@ -62,7 +70,7 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
                 return
             }
 
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.deleteRows(at: [indexPath], with: deleteAnimation)
 
         case .update:
 
@@ -72,7 +80,7 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
 
             // `configure(cell:at:)` doesn't refresh cell's states. It may be trouble in some cases.
             // Please subclass this class if you want to reduce cost of calling `reloadRows(at:with:)`.
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+            tableView.reloadRows(at: [indexPath], with: updateAnimation)
 
         case .move:
 
@@ -80,8 +88,8 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
                 return
             }
 
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            tableView.deleteRows(at: [indexPath], with: moveAnimation)
+            tableView.insertRows(at: [newIndexPath], with: moveAnimation)
 
         @unknown default:
             fatalError("New NSFetchedResultsChangeType has added by API changes.")
