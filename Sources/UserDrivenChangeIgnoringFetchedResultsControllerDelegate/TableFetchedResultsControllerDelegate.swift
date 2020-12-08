@@ -23,6 +23,8 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
 
     public var moveAnimation: UITableView.RowAnimation = .automatic
 
+    public var cellConfiguration: CellConfiguration? = nil
+
     public init(tableView: UITableView) {
         self.tableView = tableView
     }
@@ -78,9 +80,11 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
                 return
             }
 
-            // `configure(cell:at:)` doesn't refresh cell's states. It may be trouble in some cases.
-            // Please subclass this class if you want to reduce cost of calling `reloadRows(at:with:)`.
-            tableView.reloadRows(at: [indexPath], with: updateAnimation)
+            if let cellConfiguration = self.cellConfiguration, let cell = tableView.cellForRow(at: indexPath) {
+                cellConfiguration.configure(cell, at: indexPath)
+            } else {
+                tableView.reloadRows(at: [indexPath], with: updateAnimation)
+            }
 
         case .move:
 
