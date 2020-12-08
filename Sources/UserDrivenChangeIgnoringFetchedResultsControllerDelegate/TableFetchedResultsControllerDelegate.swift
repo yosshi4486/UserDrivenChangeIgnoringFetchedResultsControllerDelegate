@@ -11,21 +11,12 @@ import CoreData
 
 import UIKit
 
-public protocol CellConfigurable: AnyObject {
-
-    func configure(cell: UITableViewCell, at indexPath: IndexPath)
-
-}
-
 open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetchedResultsControllerDelegate {
 
     public unowned let tableView: UITableView
 
-    public unowned let cellConfiguable: CellConfigurable
-
-    public init(tableView: UITableView, cellConfiguable: CellConfigurable) {
+    public init(tableView: UITableView) {
         self.tableView = tableView
-        self.cellConfiguable = cellConfiguable
     }
 
     open override func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -75,11 +66,13 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
 
         case .update:
 
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {
+            guard let indexPath = indexPath else {
                 return
             }
 
-            cellConfiguable.configure(cell: cell, at: indexPath)
+            // `configure(cell:at:)` doesn't refresh cell's states. It may be trouble in some cases.
+            // Please subclass this class if you want to reduce cost of calling `reloadRows(at:with:)`.
+            tableView.reloadRows(at: [indexPath], with: .automatic)
 
         case .move:
 
