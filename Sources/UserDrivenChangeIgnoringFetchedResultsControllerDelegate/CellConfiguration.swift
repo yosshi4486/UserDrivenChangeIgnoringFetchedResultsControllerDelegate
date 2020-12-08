@@ -9,7 +9,7 @@
 
 import UIKit
 
-public protocol CellConfiguration {
+public protocol CellConfiguration : AnyObject {
 
     func configure(_ cell: UITableViewCell, at indexPath: IndexPath)
 
