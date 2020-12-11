@@ -29,18 +29,6 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
         self.tableView = tableView
     }
 
-    open override func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-
-        super.controllerWillChangeContent(controller)
-    }
-
-    open override func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-
-        super.controllerDidChangeContent(controller)
-
-        changeIsUserDriven = false
-    }
-
     open override func controllerWillChangeContentWhenChangeIsNotUserDriven(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         super.controllerWillChangeContentWhenChangeIsNotUserDriven(controller)
 
@@ -53,9 +41,7 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
         tableView.endUpdates()
     }
 
-    open override func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-
-        super.controller(controller, didChange: anObject, at: indexPath, for: type, newIndexPath: newIndexPath)
+    open override func controllerWhenChangeIsNotUserDriven(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 
         switch type {
         case .insert:
@@ -98,6 +84,7 @@ open class TableFetchedResultsControllerDelegate: UserDrivenChangeIgnoringFetche
         @unknown default:
             fatalError("New NSFetchedResultsChangeType has added by API changes.")
         }
+
     }
 
 }
